@@ -84,6 +84,16 @@ somewhere public.
 from twilio.rest import Client
 client = Client()
 ```
+### Get a phone number
+
+If you don´t have a Twilio's phone number with SMS functionality, you'll need to 
+create one which can be done with the following:
+
+```python
+twilio phone-numbers:buy:local --country-code US --sms-enabled
+```
+You will need to replace 'US' with your [ISO-3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) if you would
+like a phone number of another country.
 
 ### Specify Region and/or Edge
 
@@ -134,6 +144,28 @@ client = Client(account, token)
 
 message = client.messages.create(to="+12316851234", from_="+15555555555",
                                  body="Hello there!")
+```
+
+### Using Whatsapp
+
+User can send both, messages and images via WhatsApp:
+
+```python
+import os
+from twilio.rest import Client
+
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+
+message = client.messages \
+    .create(
+         media_url=['https://images.unsplash.com/photo-1545093149-618ce3bcf49d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'],
+         from_='whatsapp:+14155238886',
+         to='whatsapp:+15017122661'
+     )
+
+print(message.sid)
 ```
 
 ### Enable Debug Logging
